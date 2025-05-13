@@ -1,0 +1,15 @@
+import { getPendingLogs, sendNotification } from '../services/notifications';
+
+export default async function handler(req, res) {
+  const users = await getAllUsers(); // Fetch all users
+  const today = new Date().toISOString().split('T')[0];
+
+  for (const user of users) {
+    const hasSubmitted = await checkUserLogForDate(user.id, today);
+    if (!hasSubmitted) {
+      await sendNotification(user.id, 'Reminder: Please submit your log by 10 PM!');
+    }
+  }
+
+  res.status(200).json({ message: 'Reminders sent' });
+}
