@@ -8,6 +8,7 @@ import { getMockUsers } from '../../utils/mockData';
 import { WorkLog, User } from '../../types';
 import { formatTime, calculateTotalTime, getMoodEmoji } from '../../utils/helpers';
 import TeamProductivityChart from './TeamProductivityChart';
+import { getNotificationsForUser } from '../../utils/mockData';
 
 const ManagerDashboard: React.FC = () => {
   const [workLogs, setWorkLogs] = useState<WorkLog[]>([]);
@@ -217,4 +218,32 @@ const ManagerDashboard: React.FC = () => {
   );
 };
 
+const ManagerDashboard: React.FC = () => {
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const managerId = '2'; // Replace with authenticated manager ID
+      setNotifications(getNotificationsForUser(managerId));
+    };
+
+    fetchNotifications();
+  }, []);
+
+  return (
+    <div>
+      {/* Existing Dashboard Content */}
+      <h2>Notifications</h2>
+      <ul>
+        {notifications.map((notification) => (
+          <li key={notification.id}>
+            <strong>{notification.type.toUpperCase()}:</strong> {notification.message} ({new Date(notification.createdAt).toLocaleString()})
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default ManagerDashboard;
 export default ManagerDashboard;
