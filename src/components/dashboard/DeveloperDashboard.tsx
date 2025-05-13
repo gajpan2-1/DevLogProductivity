@@ -8,7 +8,6 @@ import { getWorkLogs } from '../../services/workLogs';
 import { WorkLog } from '../../types';
 import { formatTime, calculateTotalTime } from '../../utils/helpers';
 import ProductivityChart from './ProductivityChart';
-import { getNotificationsForUser } from '../../utils/mockData';
 
 const DeveloperDashboard: React.FC = () => {
   const { user } = useAuthStore();
@@ -201,24 +200,5 @@ const DeveloperDashboard: React.FC = () => {
   );
 };
 
-const DeveloperDashboard: React.FC = () => {
-  const { user } = useAuthStore();
-  const notifications = user ? getNotificationsForUser(user.id) : [];
 
-  return (
-    <div>
-      {/* Existing Dashboard Content */}
-      <h2>Notifications</h2>
-      <ul>
-        {notifications.map((notification) => (
-          <li key={notification.id}>
-            <strong>{notification.type.toUpperCase()}:</strong> {notification.message} ({new Date(notification.createdAt).toLocaleString()})
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default DeveloperDashboard;
 export default DeveloperDashboard;
