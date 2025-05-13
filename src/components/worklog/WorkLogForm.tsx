@@ -85,6 +85,13 @@ const WorkLogForm: React.FC<WorkLogFormProps> = ({
       reviewedBy: initialData?.reviewedBy,
       reviewNotes: initialData?.reviewNotes,
     };
+
+    //Trigger notification 
+const handleSubmit = async () => {
+  const response = await submitWorkLog(logData);
+  await notifyManagerOnLogSubmission(response.data.id, managerId);
+};
+    //tg notification
     
     // If editing, include the ID
     const submitData = initialData?.id
