@@ -42,6 +42,12 @@ const ManagerDashboard: React.FC = () => {
     
     fetchData();
   }, []);
+
+  //Re-fetch logs & Update
+  const refreshLogs = async () => {
+  const response = await getWorkLogs();
+  setWorkLogs(response.data);
+};
   
   // Get today's logs
   const todayDate = new Date().toISOString().split('T')[0];
