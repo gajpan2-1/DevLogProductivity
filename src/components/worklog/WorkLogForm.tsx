@@ -90,6 +90,8 @@ const WorkLogForm: React.FC<WorkLogFormProps> = ({
 const handleSubmit = async () => {
   const response = await submitWorkLog(logData);
   await notifyManagerOnLogSubmission(response.data.id, managerId);
+// Trigger dashboard refresh (can be via global state or an event emitter)
+    refreshManagerDashboard();
 };
     //tg notification
     
