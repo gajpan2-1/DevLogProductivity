@@ -69,6 +69,16 @@ export const reviewWorkLog = async (id: string, reviewed: boolean, reviewNotes?:
   }
 };
 
+//Manager Notification 
+export const notifyManagerOnLogSubmission = async (logId, managerId) => {
+  const notification = {
+    managerId,
+    message: `Log #${logId} has been submitted.`,
+  };
+  await sendNotification(managerId, notification.message);
+};
+//Notification end
+
 export const exportWorkLogs = async (format: 'pdf' | 'csv', userId?: string, startDate?: string, endDate?: string) => {
   return api.get(`/workLogs/export/${format}`, { 
     params: { userId, startDate, endDate },
