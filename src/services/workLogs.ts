@@ -1,6 +1,31 @@
 import api from './api';
 import { WorkLog } from '../types';
 import { mockGetWorkLogs, mockCreateWorkLog, mockUpdateWorkLog, mockDeleteWorkLog } from '../utils/mockData';
+import { createNotification, getMockUsers } from '../utils/mockData';
+
+const notifyManagerOnLogSubmission = (developerId: string) => {
+  const users = getMockUsers();
+  const developer = users.find((user) => user.id === developerId);
+  const manager = users.find((user) => user.role === 'manager' && user.teamId === developer?.teamId);
+
+  if (manager) {
+    createNotification(
+      manager.id,
+      `Developer ${developer?.name} has submitted a new work log.`,
+      'system'
+    );
+  }
+};
+
+export const createWorkLog = async (workLogData: Omit<WorkLog, 'id'>) => {
+  try {
+    const response = await mockCreateWorkLog(workLogData);
+    notifyManagerOnLogSubmission(workLogData.userId); // Notify manager
+    return response;
+  } catch (error: any) {
+    throw new Error(error.message || 'Failed to create work log');
+  }
+};
 
 export const getWorkLogs = async (userId?: string, startDate?: string, endDate?: string) => {
   try {
