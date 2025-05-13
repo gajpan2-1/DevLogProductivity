@@ -48,6 +48,13 @@ const ManagerDashboard: React.FC = () => {
   const response = await getWorkLogs();
   setWorkLogs(response.data);
 };
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    refreshLogs();
+  }, 10000); // Fetch logs every 10 seconds
+  return () => clearInterval(interval);
+}, []);
   
   // Get today's logs
   const todayDate = new Date().toISOString().split('T')[0];
