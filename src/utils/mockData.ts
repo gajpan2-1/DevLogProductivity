@@ -177,55 +177,6 @@ export const mockDeleteWorkLog = async (id: string) => {
     }, 500);
   });
 };
-// Add a notifications array
-let notifications: {
-  id: string;
-  userId: string;
-  message: string;
-  type: 'reminder' | 'system';
-  createdAt: string;
-}[] = [];
-
-// Function to create a notification
-export const createNotification = (userId: string, message: string, type: 'reminder' | 'system') => {
-  const notification = {
-    id: generateId(),
-    userId,
-    message,
-    type,
-    createdAt: new Date().toISOString(),
-  };
-  notifications.push(notification);
-  console.log(`Notification created for user ${userId}: ${message}`);
-};
-
-// Function to get notifications for a specific user
-export const getNotificationsForUser = (userId: string) => {
-  return notifications.filter((notification) => notification.userId === userId);
-};
-
-// Schedule daily reminders at 10 PM
-import cron from 'node-cron';
-export const scheduleDailyReminders = () => {
-  cron.schedule('0 22 * * *', () => {
-    const users = getMockUsers();
-    const today = new Date().toISOString().split('T')[0];
-
-    users.forEach((user) => {
-      if (user.role === 'developer') {
-        const hasSubmittedLog = mockWorkLogs.some((log) => log.userId === user.id && log.date === today);
-        if (!hasSubmittedLog) {
-          createNotification(user.id, 'Reminder: Please submit your daily log by 10 PM.', 'reminder');
-        }
-      }
-    });
-  });
-
-  console.log('Daily reminders scheduled at 10 PM.');
-};
-
-// Initialize reminders
-scheduleDailyReminders();
 
 // Export mock data for testing/development
 export const getMockUsers = () => mockUsers;
